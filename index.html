@@ -1,0 +1,17 @@
+<title>Starlark Online Parser</title>
+<script type="text/javascript" src="./wasm_exec.js"></script>
+<script type="text/javascript">
+		async function run(fileUrl) {
+				try {
+						const file = await fetch(fileUrl, {cache: "no-cache"});
+						const buffer = await file.arrayBuffer();
+						const go = new Go();
+						const { instance } = await WebAssembly.instantiate(buffer, go.importObject);
+						go.run(instance);
+				} catch (err) {
+						console.error(err);
+				}
+		}
+		setTimeout(() => run("./runner.wasm"));
+</script>
+
