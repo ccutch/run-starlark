@@ -11,6 +11,7 @@ var (
 )
 
 func main() {
+	quit = make(chan bool)
 	document := js.Global().Get("document")
 	codeboxes := document.Call("getElementsByClassName", "codebox-container").Call("item", 0)
 
