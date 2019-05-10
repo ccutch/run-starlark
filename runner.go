@@ -6,26 +6,23 @@ import "go.starlark.net/starlark"
 import "syscall/js"
 
 var (
-	quit                                  chan bool
-	window, document, body, result, input js.Value
+	quit          chan bool
+	result, input js.Value
 )
 
 func main() {
-	quit = make(chan bool)
+	document := js.Global().Get("document")
+	codeboxes := document.Call("getElementsByClassName", "codebox-container").Call("item", 0)
 
-	window = js.Global()
-	document = window.Get("document")
-	body = document.Get("body")
-
-	result = document.Call("createElement", "div")
-	result.Set("id", "result")
+	result = document.Call("createElement", "textarea")
+	result.Set("className", "codebox")
 
 	input = document.Call("createElement", "textarea")
-	input.Set("value", "")
+	input.Set("className", "codebox")
 	input.Call("addEventListener", "input", js.FuncOf(handleChange))
 
-	body.Call("appendChild", input)
-	body.Call("appendChild", result)
+	codeboxes.Call("appendChild", input)
+	codeboxes.Call("appendChild", result)
 
 	<-quit
 }
@@ -37,12 +34,8 @@ func handleChange(this js.Value, args []js.Value) interface{} {
 	if err == nil {
 		fmt.Println("res: ", res)
 		result.Set("innerHTML", res.String())
-		// b, err := json.Marshal(&res)
-		//fmt.Println("encoding:", b, err)
-
-		//result.Set("innerHTML", string(b))
 	} else {
-		fmt.Println("err: ", err)
+		result.Set("innerHTML", err.Error())
 	}
 
 	return nil

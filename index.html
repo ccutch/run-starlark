@@ -1,4 +1,6 @@
 <title>Starlark Online Parser</title>
+<link rel="stylesheet" href="/styles.css">
+
 <script type="text/javascript" src="./wasm_exec.js"></script>
 <script type="text/javascript">
 		async function run(fileUrl) {
@@ -12,6 +14,15 @@
 						console.error(err);
 				}
 		}
-		setTimeout(() => run("./runner.wasm"));
+		setTimeout(() => run("./win_runner.wasm"));
 </script>
 
+
+<header>
+	<h2>Starlark Online Interpreter</h2>
+</header>
+
+<div class="codebox-container">
+	<!-- <textarea id="input" class="codebox"></textarea>
+	<textarea id="results" class="codebox" readonly></textarea> -->
+</div>
